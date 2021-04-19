@@ -5,6 +5,9 @@ import os
 import gym
 import minerl
 
+import env_vars
+
+
 import coloredlogs
 coloredlogs.install(logging.DEBUG)
 
@@ -30,6 +33,8 @@ TRAINED_MODEL_PATH = "train/trained_model.th"
 
 
 def main():
+    os.environ['MINERL_DATA_ROOT'] = env_vars.MINERL_DATA_ROOT
+
     """
     This function will be called for training phase.
     """

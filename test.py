@@ -25,6 +25,9 @@ import coloredlogs
 import torch
 from torch_codes.modules import IMPALANetwork
 
+
+import env_vars
+
 coloredlogs.install(logging.DEBUG)
 
 # All the evaluations will be evaluated on MineRLObtainDiamondVectorObf-v0 environment
@@ -282,6 +285,7 @@ AGENT_TO_TEST = TorchDiscreteActionPolicy
 
 
 def main():
+    os.environ['MINERL_DATA_ROOT'] = env_vars.MINERL_DATA_ROOT
     agent = AGENT_TO_TEST()
     assert isinstance(agent, MineRLAgentBase)
     agent.load_agent()

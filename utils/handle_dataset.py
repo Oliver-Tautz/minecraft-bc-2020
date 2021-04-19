@@ -64,7 +64,7 @@ def store_subset_to_hdf5(remaining_args):
     parser.add_argument("output_file", type=str, help="Location where HDF5 file should be stored")
     args = parser.parse_args(remaining_args)
     subset_names = args.subset_names
-    data_dir = args.data_dir
+    data_dir = None #args.data_dir
     output_file = args.output_file
 
     assert all(map(lambda x: "Obf" in x, subset_names)), "Environments must be Obf envs"

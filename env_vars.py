@@ -1,0 +1,1 @@
+MINERL_DATA_ROOT = '/home/olli/gits/data'
