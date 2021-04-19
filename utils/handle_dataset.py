@@ -70,7 +70,7 @@ def store_subset_to_hdf5(remaining_args):
     assert all(map(lambda x: "Obf" in x, subset_names)), "Environments must be Obf envs"
 
     datas = [minerl.data.make(subset_name, data_dir=data_dir, num_workers=1) for subset_name in subset_names]
-    asdf
+    
 
     # First measure how many observations we have
     num_observations = 0
