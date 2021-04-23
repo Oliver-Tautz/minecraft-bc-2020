@@ -52,7 +52,7 @@ parser.add_argument("--dropout-rate", type=float, default=None, help="If given, 
 
 def main(args, unparsed_args):
     # Create dataloaders
-    print('it works!')
+
     assert args.include_frameskip is not None, "This code only works with frameskip enabled."
 
     resize_func = None if args.image_size == 64 else partial(resize_image, width_and_height=(args.image_size, args.image_size))
@@ -109,19 +109,19 @@ def main(args, unparsed_args):
         num_additional_features,
         cnn_head_class=args.resnet,
         latent_size=LSTM_LATENT_SIZE
-    ).cuda()
+    ).cpu()
     optimizer = torch.optim.Adam(network.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     # Keep track of hidden states per episodes ("h" and "c" components of LSTM)
     hidden_state_h = torch.zeros(
         data_sampler.num_episodes,
         LSTM_LATENT_SIZE
-    ).cuda()
+    ).cpu()
 
     hidden_state_c = torch.zeros(
         data_sampler.num_episodes,
         LSTM_LATENT_SIZE
-    ).cuda()
+    ).cpu()
 
     # Also keep track on if we should flip the images horizontally in the episode.
     # NOTE that we do not flip actions! This might be wrong, but also with LSTM

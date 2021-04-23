@@ -8,6 +8,7 @@ from tqdm import tqdm
 import h5py
 import gym
 import minerl
+import time
 
 
 def store_actions_to_numpy_file(subset_name, data_dir, output_file, num_workers=4):
@@ -135,6 +136,11 @@ def store_subset_to_hdf5(remaining_args):
     episode_starts = [0]
 
     for data in datas:
+
+        # without this it freezes. Too much ram?!
+        time.sleep(0.01)
+
+
         for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64), desc="store"):
             # Careful with the ordering of things here...
             # Iterate over seq len (second dim)

@@ -5,7 +5,13 @@ import os
 import gym
 import minerl
 
+# set env var!
 import env_vars
+
+from utils.handle_dataset import store_subset_to_hdf5, remove_frameskipped_samples
+from wrappers.action_wrappers import fit_kmeans, update_hdf5_with_centroids
+from train_bc_lstm import main as main_train_bc
+from train_bc_lstm import parser as train_bc_parser
 
 
 import coloredlogs
@@ -33,15 +39,17 @@ TRAINED_MODEL_PATH = "train/trained_model.th"
 
 
 def main():
+    prepData()
+    #train()
+
+
+def prepData():
     os.environ['MINERL_DATA_ROOT'] = env_vars.MINERL_DATA_ROOT
 
     """
     This function will be called for training phase.
     """
-    from utils.handle_dataset import store_subset_to_hdf5, remove_frameskipped_samples
-    from wrappers.action_wrappers import fit_kmeans, update_hdf5_with_centroids
-    from train_bc_lstm import main as main_train_bc
-    from train_bc_lstm import parser as train_bc_parser
+
 
     os.makedirs("train", exist_ok=True)
 
@@ -90,7 +98,7 @@ def main():
         HDF5_DATA_FILE_FRAMESKIPPED
     ]
     remove_frameskipped_samples(removed_frameskipped_params)
-
+def train():
     # Train model with behavioural cloning
     bc_train_params = [
         HDF5_DATA_FILE_FRAMESKIPPED,
