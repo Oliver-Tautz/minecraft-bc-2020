@@ -9,6 +9,7 @@ import h5py
 import gym
 import minerl
 import time
+import gc
 
 
 def store_actions_to_numpy_file(subset_name, data_dir, output_file, num_workers=4):
@@ -75,7 +76,16 @@ def store_subset_to_hdf5(remaining_args):
 
     # First measure how many observations we have
     num_observations = 0
+
+    # all sets
     #num_observations = 3894976
+
+    # treechop and diamond
+    #num_observations = 2366208
+
+
+    # treechop only
+    #num_observations = 449664
 
     #store and acess this? Why create it every time?
 
@@ -85,6 +95,8 @@ def store_subset_to_hdf5(remaining_args):
             pass
             num_observations += rewards.shape[1]
 
+    # force garbage collection
+    gc.collect()
 
     data =   datas[0]
 
@@ -129,7 +141,7 @@ def store_subset_to_hdf5(remaining_args):
     datasets = {}
 
     # Create HDF5 file
-    store_file = h5py.File(output_file, "w")
+    store_file = h5py.File(output_file, "a")
     # Create datasets
     for key, space in zip(dataset_keys, dataset_spaces):
         shape = (num_observations,) + space.shape
@@ -145,9 +157,13 @@ def store_subset_to_hdf5(remaining_args):
     episode_starts = [0]
 
 
-
+    # load all data a second time?! ;(
     for data in datas:
         for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64), desc="store"):
+            #without this my ram is not enough.
+            #gc.collect()
+            #time.sleep(0.1)
+
             # Careful with the ordering of things here...
             # Iterate over seq len (second dim)
             for i in range(rewards.shape[1]):

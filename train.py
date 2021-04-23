@@ -59,7 +59,7 @@ def prepData():
         HDF5_DATA_FILE,
         "--subset-names",
         "MineRLTreechopVectorObf-v0",
-        #"MineRLObtainIronPickaxeVectorObf-v0",
+        "MineRLObtainIronPickaxeVectorObf-v0",
         "MineRLObtainDiamondVectorObf-v0"
     ]
     store_subset_to_hdf5(store_subset_to_hdf5_params)
@@ -75,15 +75,16 @@ def prepData():
     ]
     fit_kmeans(kmean_params)
 
+    # Do this all again?!
     # Turn dataset into HDF5 for training (no ObtainDiamond)
     store_subset_to_hdf5_params = [
         MINERL_DATA_ROOT,
         HDF5_DATA_FILE,
         "--subset-names", 
         "MineRLTreechopVectorObf-v0",
-        "MineRLObtainIronPickaxeVectorObf-v0",
+        "MineRLObtainIronPickaxeVectorObf-v0"
     ]
-    store_subset_to_hdf5(store_subset_to_hdf5_params)
+   # store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Update centroid locations in the data
     update_hdf5_params = [
