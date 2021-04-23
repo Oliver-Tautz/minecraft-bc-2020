@@ -59,7 +59,7 @@ def prepData():
         HDF5_DATA_FILE,
         "--subset-names",
         "MineRLTreechopVectorObf-v0",
-        "MineRLObtainIronPickaxeVectorObf-v0",
+        #"MineRLObtainIronPickaxeVectorObf-v0",
         "MineRLObtainDiamondVectorObf-v0"
     ]
     store_subset_to_hdf5(store_subset_to_hdf5_params)

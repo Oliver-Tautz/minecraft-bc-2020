@@ -75,15 +75,15 @@ def store_subset_to_hdf5(remaining_args):
 
     # First measure how many observations we have
     num_observations = 0
-    num_observations = 3894976
+    #num_observations = 3894976
 
     #store and acess this? Why create it every time?
 
 
-    #for data in datas:
-     #   for _, _, rewards, _, _ in tqdm(data.batch_iter(num_epochs=1, batch_size=1, seq_len=64), desc="size"):
-     #       pass
-           # num_observations += rewards.shape[1]
+    for data in datas:
+        for _, _, rewards, _, _ in tqdm(data.batch_iter(num_epochs=1, batch_size=1, seq_len=64), desc="size"):
+            pass
+            num_observations += rewards.shape[1]
 
 
     data =   datas[0]
@@ -144,8 +144,9 @@ def store_subset_to_hdf5(remaining_args):
     # Keep track where episodes start
     episode_starts = [0]
 
-    for data in datas:
 
+
+    for data in datas:
         for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64), desc="store"):
             # Careful with the ordering of things here...
             # Iterate over seq len (second dim)
@@ -180,6 +181,8 @@ def store_subset_to_hdf5(remaining_args):
                     episode_starts.append(idx + 1)
 
                 idx += 1
+
+
 
     # Handle returns
     reward_to_go = 0
