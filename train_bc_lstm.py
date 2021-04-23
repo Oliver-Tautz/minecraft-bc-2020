@@ -52,6 +52,7 @@ parser.add_argument("--dropout-rate", type=float, default=None, help="If given, 
 
 def main(args, unparsed_args):
     # Create dataloaders
+    print('it works!')
     assert args.include_frameskip is not None, "This code only works with frameskip enabled."
 
     resize_func = None if args.image_size == 64 else partial(resize_image, width_and_height=(args.image_size, args.image_size))
@@ -191,8 +192,8 @@ def main(args, unparsed_args):
             masked_horizontal_flip = horizontal_flip_episodes[masked_episode_indeces]
             pov[:, masked_horizontal_flip] = np.flip(pov[:, masked_horizontal_flip], 4)
 
-        pov = torch.from_numpy(pov).cuda()
-        obs_vector = torch.from_numpy(obs_vector).float().cuda()
+        pov = torch.from_numpy(pov).cpu()
+        obs_vector = torch.from_numpy(obs_vector).float().cpu()
 
         # Add the initial "num-layers shape"
         hidden_states = (
@@ -220,7 +221,7 @@ def main(args, unparsed_args):
         # pi-loss (i.e. predict correct action).
         predicted_action = network_output["action"]
         # Remove the extra dimension in the end
-        target_action = torch.from_numpy(target_action.astype(np.int64)[..., -1]).cuda()
+        target_action = torch.from_numpy(target_action.astype(np.int64)[..., -1]).cpu()
 
         # Maximize llk
         dist = torch.distributions.Categorical(logits=predicted_action)
@@ -234,7 +235,7 @@ def main(args, unparsed_args):
         # Action-frameskip loss
         predicted_frameskip = network_output["frameskip"]
         # Remove extra dimension in the end
-        target_frameskip = torch.from_numpy(target_frameskip[..., -1]).long().cuda()
+        target_frameskip = torch.from_numpy(target_frameskip[..., -1]).long().cpu()
 
         dist = torch.distributions.Categorical(logits=predicted_frameskip)
         log_prob = dist.log_prob(target_frameskip).mean()

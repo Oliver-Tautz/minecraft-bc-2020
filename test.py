@@ -234,16 +234,16 @@ class TorchDiscreteActionPolicy(MineRLAgentBase):
                         # TODO move this transposing somewhere else...
                         # TODO make the whole "float()"  stuff unified somehow
                         # Add batch and time dimensions here
-                        torch.from_numpy(obs["pov"].transpose(2, 0, 1)[None, None]).cuda(),
-                        torch.from_numpy(vector_obs[None, None]).float().cuda(),
+                        torch.from_numpy(obs["pov"].transpose(2, 0, 1)[None, None]).cpu(),
+                        torch.from_numpy(vector_obs[None, None]).float().cpu(),
                         hidden_states=hidden_state
                     )
                 else:
                     prediction = self.model(
                         # TODO move this transposing somewhere else...
                         # TODO make the whole "float()"  stuff unified somehow
-                        torch.from_numpy(obs["pov"].transpose(2, 0, 1)[None]).cuda(),
-                        torch.from_numpy(obs["vector"][None]).float().cuda(),
+                        torch.from_numpy(obs["pov"].transpose(2, 0, 1)[None]).cpu(),
+                        torch.from_numpy(obs["vector"][None]).float().cpu(),
                         None
                     )
 
