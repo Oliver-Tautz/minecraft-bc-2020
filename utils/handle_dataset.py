@@ -160,6 +160,7 @@ def store_subset_to_hdf5(remaining_args):
     # load all data a second time?! ;(
     for data in datas:
         for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64), desc="store"):
+
             #without this my ram is not enough.
             #gc.collect()
             #time.sleep(0.1)

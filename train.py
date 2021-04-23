@@ -62,7 +62,9 @@ def prepData():
         "MineRLObtainIronPickaxeVectorObf-v0",
         "MineRLObtainDiamondVectorObf-v0"
     ]
-    store_subset_to_hdf5(store_subset_to_hdf5_params)
+
+
+    #store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Fit Kmeans on actions from all three datasets
     # Suuuuuper-elegant argument passing, thanks
@@ -71,7 +73,7 @@ def prepData():
         HDF5_DATA_FILE,
         ACTION_CENTROIDS_FILE,
         "--n-clusters", "150",
-        "--n-init", "30"
+        "--n-init", "5"
     ]
     fit_kmeans(kmean_params)
 
