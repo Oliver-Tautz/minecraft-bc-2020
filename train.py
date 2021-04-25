@@ -39,8 +39,8 @@ TRAINED_MODEL_PATH = "train/trained_model.th"
 
 
 def main():
-    prepData()
-    #train()
+    #prepData()
+    train()
 
 
 def prepData():
@@ -59,8 +59,8 @@ def prepData():
         HDF5_DATA_FILE,
         "--subset-names",
         "MineRLTreechopVectorObf-v0",
-        "MineRLObtainIronPickaxeVectorObf-v0",
-        "MineRLObtainDiamondVectorObf-v0"
+        "MineRLObtainIronPickaxeVectorObf-v0"
+       #"MineRLObtainDiamondVectorObf-v0"
     ]
 
 
@@ -101,6 +101,7 @@ def prepData():
         HDF5_DATA_FILE_FRAMESKIPPED
     ]
     remove_frameskipped_samples(removed_frameskipped_params)
+
 def train():
     # Train model with behavioural cloning
     bc_train_params = [
@@ -111,7 +112,7 @@ def train():
         "--discrete-actions",
         "--num-discrete-actions", "150",
         "--frameskip-from-vector",
-        "--batch-size", "32",
+        "--batch-size", "12",
         "--lr", "0.0000625",
         "--weight-decay", "1e-5",
         "--seq-len", "32",
