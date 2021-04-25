@@ -20,6 +20,8 @@ from utils.misc_utils import parse_keyword_arguments
 from wrappers.action_wrappers import CentroidActions
 from wrappers.observation_wrappers import resize_image
 
+from torchsummary import summary
+
 LSTM_LATENT_SIZE = 512
 
 RESNETS = [
@@ -51,9 +53,11 @@ parser.add_argument("--dropout-rate", type=float, default=None, help="If given, 
 
 
 def main(args, unparsed_args):
+
     # Create dataloaders
 
     assert args.include_frameskip is not None, "This code only works with frameskip enabled."
+
 
     resize_func = None if args.image_size == 64 else partial(resize_image, width_and_height=(args.image_size, args.image_size))
     dataset_mappings = {
@@ -137,8 +141,11 @@ def main(args, unparsed_args):
     start_time = time()
 
     for i, data_batch_and_episode_indeces in enumerate(tqdm(data_sampler, desc="train")):
+
         data_batch = data_batch_and_episode_indeces[0]
         episode_indeces = data_batch_and_episode_indeces[1]
+
+       # print(data_batch.keys())
 
         # Easy way out of the whole "episodes ending at different times":
         # Discard samples where final step is nans (i.e. the sampled
@@ -202,6 +209,13 @@ def main(args, unparsed_args):
         )
 
         network_output, new_states = network(pov, obs_vector, hidden_states=hidden_states, return_sequence=True)
+       # print(network)
+
+        #This doesnt work (yet?)
+        #summary(network,(32, 28, 3, 64, 64,),device='cpu')
+
+
+
 
         # Store new stats back to tracked episode states.
         # Kill the gradient so we do not try to backprop.

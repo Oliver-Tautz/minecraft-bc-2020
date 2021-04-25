@@ -299,6 +299,7 @@ class IMPALANetworkWithLSTM(nn.Module):
         self.num_additional_features = num_additional_features
         # SuperSecure^{tm}
         cnn_head_class = eval(cnn_head_class)
+        #print(cnn_head_class)
         self.cnn_head = cnn_head_class(
             in_channels=image_shape[0],
         )
@@ -325,6 +326,7 @@ class IMPALANetworkWithLSTM(nn.Module):
         i.e. zero vectors.
         """
         device = self.lstm.weight_hh_l0.device
+
         h = torch.zeros(1, batch_size, self.latent_size).to(device)
         c = torch.zeros(1, batch_size, self.latent_size).to(device)
         return h, c
@@ -335,6 +337,9 @@ class IMPALANetworkWithLSTM(nn.Module):
         """
         assert hidden_states is not None, "No hidden states provided"
         assert head_indeces is None, "Sub-tasks not supported for LSTM yet"
+
+        #print(additional_features.shape)
+        #print(image_observation.shape)
 
         # Normalize image (uint8)
         x = image_observation.float() / 255.0
