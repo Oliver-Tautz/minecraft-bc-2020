@@ -11,6 +11,7 @@ import minerl
 import time
 import gc
 
+from time import sleep
 
 def store_actions_to_numpy_file(subset_name, data_dir, output_file, num_workers=4):
     """
@@ -78,7 +79,7 @@ def store_subset_to_hdf5(remaining_args):
     num_observations = 0
 
     # all sets
-    #num_observations = 3894976
+    num_observations = 3894976
 
     # treechop and diamond
     #num_observations = 2366208
@@ -90,15 +91,15 @@ def store_subset_to_hdf5(remaining_args):
     #store and acess this? Why create it every time?
 
 
-    for data in datas:
-        for _, _, rewards, _, _ in tqdm(data.batch_iter(num_epochs=1, batch_size=1, seq_len=64), desc="size"):
-            pass
-            num_observations += rewards.shape[1]
+    #for data in datas:
+    #    for _, _, rewards, _, _ in tqdm(data.batch_iter(num_epochs=1, batch_size=1, seq_len=64), desc="size"):
+    #        pass
+    #        num_observations += rewards.shape[1]
 
     # force garbage collection
-    gc.collect()
 
-    data =   datas[0]
+
+    data = datas[0]
 
     print("Total count of observations: {}".format(num_observations))
 
@@ -141,7 +142,7 @@ def store_subset_to_hdf5(remaining_args):
     datasets = {}
 
     # Create HDF5 file
-    store_file = h5py.File(output_file, "a")
+    store_file = h5py.File(output_file, "w")
     # Create datasets
     for key, space in zip(dataset_keys, dataset_spaces):
         shape = (num_observations,) + space.shape
@@ -159,7 +160,10 @@ def store_subset_to_hdf5(remaining_args):
 
     # load all data a second time?! ;(
     for data in datas:
-        for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64), desc="store"):
+        gc.collect()
+        sleep(5)
+
+        for observations, actions, rewards, _, dones in tqdm(data.batch_iter(batch_size=1, num_epochs=1, seq_len=64,preload_buffer_size=2),desc = 'store'):
 
             #without this my ram is not enough.
             #gc.collect()

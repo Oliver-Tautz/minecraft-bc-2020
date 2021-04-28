@@ -39,8 +39,8 @@ TRAINED_MODEL_PATH = "train/trained_model.th"
 
 
 def main():
-    #prepData()
-    train()
+    prepData()
+    #train()
 
 
 def prepData():
@@ -59,12 +59,12 @@ def prepData():
         HDF5_DATA_FILE,
         "--subset-names",
         "MineRLTreechopVectorObf-v0",
-        "MineRLObtainIronPickaxeVectorObf-v0"
-       #"MineRLObtainDiamondVectorObf-v0"
+        "MineRLObtainIronPickaxeVectorObf-v0",
+        "MineRLObtainDiamondVectorObf-v0"
     ]
 
 
-    #store_subset_to_hdf5(store_subset_to_hdf5_params)
+    store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Fit Kmeans on actions from all three datasets
     # Suuuuuper-elegant argument passing, thanks
@@ -86,7 +86,7 @@ def prepData():
         "MineRLTreechopVectorObf-v0",
         "MineRLObtainIronPickaxeVectorObf-v0"
     ]
-   # store_subset_to_hdf5(store_subset_to_hdf5_params)
+    #store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Update centroid locations in the data
     update_hdf5_params = [
