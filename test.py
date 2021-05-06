@@ -28,6 +28,8 @@ from torch_codes.modules import IMPALANetwork
 
 import env_vars
 
+np.random.seed(406373)
+
 coloredlogs.install(logging.DEBUG)
 
 # All the evaluations will be evaluated on MineRLObtainDiamondVectorObf-v0 environment

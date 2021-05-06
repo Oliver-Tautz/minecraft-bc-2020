@@ -49,6 +49,7 @@ class ResidualBlock(nn.Module):
             self.conv1.weight *= first_conv_weight_scale
 
     def forward(self, x):
+        print('before resnet:', x.shape)
         x = F.relu(x, inplace=True)
         original = x
 
@@ -104,7 +105,9 @@ class ResNetHead(nn.Module):
         self.blocks = nn.Sequential(*self.blocks)
 
     def forward(self, x):
+
         x = self.blocks(x)
+        print('after head, without reshape:',x.shape)
         # Flatten
         x = x.reshape(x.shape[0], -1)
         x = F.relu(x, inplace=True)
@@ -343,6 +346,7 @@ class IMPALANetworkWithLSTM(nn.Module):
 
         # Normalize image (uint8)
         x = image_observation.float() / 255.0
+        print('input_image_shape',image_observation.shape)
 
         # Flatten batch and timestep axis into one to run through
         # CNN head.
@@ -350,23 +354,38 @@ class IMPALANetworkWithLSTM(nn.Module):
         x_shape = x.shape
         x = x.reshape(x_shape[0] * x_shape[1], x_shape[2], x_shape[3], x_shape[4])
         x = self.cnn_head(x)
+        print('cnn_head',self.cnn_head)
+        print('after head:',x.shape)
         # Fully-connected
         x = F.relu(self.cnn_fc(x), inplace=True)
+        print('after fc_relu',x.shape)
         # Now return to original seq_len, batch_size dim
         x = x.view(x_shape[0], x_shape[1], -1)
+
+        print('additional_features',additional_features.shape)
 
         # Add additional features
         x = torch.cat((x, additional_features), dim=2)
 
+        print('concat for lstm', x.shape)
+
+
+
         # Run through lstms
         x, hidden_states = self.lstm(x, hidden_states)
 
+        print('after_lstm',x.shape)
+        print('hidden_states',hidden_states[0].shape, hidden_states[1].shape)
+
         if not return_sequence:
+            # this is not used in training!
             # Restrict to only last element in sequence
             x = x[-1]
 
         # Aaaand final mapping to output
         x = self.final_fc(x)
+
+        print('outsize: ',x.shape)
 
         # Split to different dicts according to output sizes
         outputs = {}
@@ -378,5 +397,5 @@ class IMPALANetworkWithLSTM(nn.Module):
             else:
                 outputs[name] = x[:, i:i + size]
             i += size
-
+        print('output_dict:',outputs.keys(),list(map(lambda x: x.shape,outputs.values())))
         return outputs, hidden_states
