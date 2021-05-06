@@ -54,7 +54,7 @@ def main():
         "MineRLObtainIronPickaxeVectorObf-v0",
         "MineRLObtainDiamondVectorObf-v0"
     ]
-    store_subset_to_hdf5(store_subset_to_hdf5_params)
+    #store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Fit Kmeans on actions from all three datasets
     # Suuuuuper-elegant argument passing, thanks
@@ -65,7 +65,7 @@ def main():
         "--n-clusters", "150",
         "--n-init", "30"
     ]
-    fit_kmeans(kmean_params)
+    #fit_kmeans(kmean_params)
 
     # Turn dataset into HDF5 for training (no ObtainDiamond)
     store_subset_to_hdf5_params = [
@@ -75,21 +75,21 @@ def main():
         "MineRLTreechopVectorObf-v0",
         "MineRLObtainIronPickaxeVectorObf-v0",
     ]
-    store_subset_to_hdf5(store_subset_to_hdf5_params)
+    #store_subset_to_hdf5(store_subset_to_hdf5_params)
 
     # Update centroid locations in the data
     update_hdf5_params = [
         HDF5_DATA_FILE,
         ACTION_CENTROIDS_FILE
     ]
-    update_hdf5_with_centroids(update_hdf5_params)
+    #update_hdf5_with_centroids(update_hdf5_params)
 
     # Remove frameskipped frames for LSTM training
     removed_frameskipped_params = [
         HDF5_DATA_FILE,
         HDF5_DATA_FILE_FRAMESKIPPED
     ]
-    remove_frameskipped_samples(removed_frameskipped_params)
+    #remove_frameskipped_samples(removed_frameskipped_params)
 
     # Train model with behavioural cloning
     bc_train_params = [
