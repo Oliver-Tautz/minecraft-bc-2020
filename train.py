@@ -26,9 +26,9 @@ MINERL_DATA_ROOT = os.getenv('MINERL_DATA_ROOT', 'data/')
 
 
 # My variables
-HDF5_DATA_FILE = "../../input/myffily/data.hdf5"
-HDF5_DATA_FILE_FRAMESKIPPED = "../../input/myffily/data_frameskipped.hdf5"
-ACTION_CENTROIDS_FILE = "../../input/myffily/action_centroids.npy"
+HDF5_DATA_FILE = "/kaggle/input/myffily/data.hdf5"
+HDF5_DATA_FILE_FRAMESKIPPED = "/kaggle/input/myffily/data_frameskipped.hdf5"
+ACTION_CENTROIDS_FILE = "/kaggle/input/myffily/action_centroids.npy"
 TRAINED_MODEL_PATH = "train/trained_model.th"
 
 
