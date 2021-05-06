@@ -246,7 +246,7 @@ def main(args, unparsed_args):
 
         losses.append(total_loss.cpu().detach().item())
 
-        if (i % 10000) == 0:
+        if (i % 1000) == 0:
             tqdm.write("Steps {:<9} Time {:<9} Avrg loss {:<10.5f}".format(
                 i,
                 int(time() - start_time),
